@@ -8,7 +8,7 @@ const ExpenseList: React.FC = () => {
 
   useEffect(() => {
     retrieveExpenses();
-  });
+  }, []);
 
 
   const retrieveExpenses = () => {
