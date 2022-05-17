@@ -1,6 +1,8 @@
-import React, {useState, useEffect, ChangeEvent} from "react";
+import React, {useState, useEffect} from "react";
 import ExpenseService from '../services/ExpenseService';
 import IExpense from "../models/IExpense";
+
+import ExpenseListItem from "./ExpenseListItem";
 
 const ExpenseList: React.FC = () => {
 
@@ -26,15 +28,18 @@ const ExpenseList: React.FC = () => {
       <table style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
         <thead>
           <tr>
+            <th>Id</th>
             <th>Title</th>
+            <th>Cost</th>
+            <th>Due Date</th>
+            <th>Paid?</th>
+            <th>Payment Method</th>
           </tr>
         </thead>
         <tbody>
           {
             expenses && expenses.map((exp, index) => (
-              <tr key={index}>
-                <td>{exp.title}</td>
-              </tr>
+              <ExpenseListItem key={index} expense={exp}  />
             ))
           }
         </tbody>
