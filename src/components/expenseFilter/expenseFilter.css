@@ -1,0 +1,14 @@
+.expense-filter-form ul{
+  list-style: none;
+}
+
+.expense-filter-form ul li{
+  display: inline-block;
+  margin-right: .7em;
+}
+
+.expense-filter-form label{
+  font-weight: bold;
+  display: block;
+  text-align: left;
+}

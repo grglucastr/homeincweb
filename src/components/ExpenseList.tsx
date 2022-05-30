@@ -3,6 +3,7 @@ import ExpenseService from '../services/ExpenseService';
 import IExpense from "../models/IExpense";
 
 import ExpenseListItem from "./ExpenseListItem";
+import ExpenseFilter from "./expenseFilter/ExpenseFilter";
 
 const ExpenseList: React.FC = () => {
 
@@ -25,6 +26,7 @@ const ExpenseList: React.FC = () => {
 
   return (
     <div>
+      <ExpenseFilter />
       <table style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
         <thead>
           <tr>
