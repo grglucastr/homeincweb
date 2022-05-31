@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from "react";
+import { useState } from "react";
+import IExpenseFilter from "../../models/IExpenseFilter";
 
 import './expenseFilter.css';
 
 
-const ExpenseFilter: React.FC = () => {
+const ExpenseFilter = ({onSearchFilter}: any) => {
 
   const [id, setId] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -14,8 +15,12 @@ const ExpenseFilter: React.FC = () => {
 
   const formSubmit = (e: any) => {
     e.preventDefault();
-    
-    clearFields();
+
+    const filterOptions: IExpenseFilter = {
+      id, title, year, month, paid
+    };
+
+    onSearchFilter(filterOptions);
   }
 
   const clearFields = () => {
@@ -54,6 +59,7 @@ const ExpenseFilter: React.FC = () => {
               <option value="2">2</option>
               <option value="3">3</option>
               <option value="4">4</option>
+              <option value="5">5</option>
             </select>
           </li>
           <li>
@@ -61,8 +67,11 @@ const ExpenseFilter: React.FC = () => {
               <input type="checkbox"  id="paid" checked={paid} onChange={() => setPaid(!paid)} />
             </label>
           </li>
+          <li>
+            <button id="expenseSearch">Search</button>
+          </li>
         </ul>
-        <button id="expenseSearch">Search</button>
+        
       </form>
     </div>
   )

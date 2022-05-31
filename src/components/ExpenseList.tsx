@@ -4,6 +4,7 @@ import IExpense from "../models/IExpense";
 
 import ExpenseListItem from "./ExpenseListItem";
 import ExpenseFilter from "./expenseFilter/ExpenseFilter";
+import IExpenseFilter from "../models/IExpenseFilter";
 
 const ExpenseList: React.FC = () => {
 
@@ -21,10 +22,15 @@ const ExpenseList: React.FC = () => {
     });
   }
 
+  const retrieveExpensesWithOptions = (filterOptions: IExpenseFilter) => {
+    console.log('here in the parent:', filterOptions);
+    
+  }
+
 
   return (
     <div>
-      <ExpenseFilter />
+      <ExpenseFilter onSearchFilter={(filterOptions:IExpenseFilter) => retrieveExpensesWithOptions(filterOptions)}/>
 
 
       <table style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
