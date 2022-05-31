@@ -15,11 +15,9 @@ const ExpenseList: React.FC = () => {
 
 
   const retrieveExpenses = () => {
-    console.log('Fetching expenses...');
     ExpenseService.getAll()
     .then((response:any) => {
       setExpenses(response.data)
-      console.log('Expenses: ', response.data);
     });
   }
 
@@ -27,6 +25,8 @@ const ExpenseList: React.FC = () => {
   return (
     <div>
       <ExpenseFilter />
+
+
       <table style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
         <thead>
           <tr>
