@@ -23,6 +23,12 @@ const getExpenseById = (id: number) => {
 function buildQueryString(filterOptions: IExpenseFilter): string {
     
     let queryString = "/expenses?";
+    let paid = "paid=false";
+    if(filterOptions.paid){
+        paid = "paid=true";
+    }
+
+    queryString += paid;
 
     const year = parseInt(filterOptions.year);
     const month = parseInt(filterOptions.month);
@@ -38,7 +44,7 @@ function buildQueryString(filterOptions: IExpenseFilter): string {
         nextMonthStr = `0${nextMonth}`;
     }
 
-    queryString += `dueDateStart=${year}-${monthStr}-01`;
+    queryString += `&dueDateStart=${year}-${monthStr}-01`;
 
     if(month == 12){
         const nextYear = year + 1;
