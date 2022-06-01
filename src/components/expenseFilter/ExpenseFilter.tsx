@@ -16,21 +16,14 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
   const formSubmit = (e: any) => {
     e.preventDefault();
 
+    const idNumber = parseInt(id);
+
     const filterOptions: IExpenseFilter = {
-      id, title, year, month, paid
+      id:idNumber, title, year, month, paid
     };
 
     onSearchFilter(filterOptions);
   }
-
-  const clearFields = () => {
-    setId("");
-    setTitle('');
-    setYear('');
-    setMonth('');
-    setPaid(false);
-  }
-
 
   return(
     <div>

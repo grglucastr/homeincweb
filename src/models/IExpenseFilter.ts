@@ -1,5 +1,5 @@
 export default interface IExpenseFilter {
-  id: string;
+  id: number;
   title: string;
   year: string;
   month: string;

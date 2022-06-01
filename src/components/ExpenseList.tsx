@@ -11,11 +11,11 @@ const ExpenseList: React.FC = () => {
   const [expenses, setExpenses] = useState<Array<IExpense>>([]);
 
   useEffect(() => {
-    retrieveExpenses();
+    loadInitialData();
   }, []);
 
 
-  const retrieveExpenses = () => {
+  const loadInitialData = () => {
     ExpenseService.getAll()
     .then((response:any) => {
       setExpenses(response.data)
@@ -23,8 +23,22 @@ const ExpenseList: React.FC = () => {
   }
 
   const retrieveExpensesWithOptions = (filterOptions: IExpenseFilter) => {
-    console.log('here in the parent:', filterOptions);
-    
+
+    if(filterOptions.id > 0){
+      ExpenseService.getExpenseById(filterOptions.id)
+      .then((response: any) => {
+        setExpenses([response.data]);
+      }).catch(() => {
+        console.log('nothing found');
+      });
+
+      return;
+    }
+
+    ExpenseService.getExpensesWithFilter(filterOptions)
+    .then((response:any) => {      
+      setExpenses([...response.data])
+    });
   }
 
 
