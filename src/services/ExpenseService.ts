@@ -30,6 +30,10 @@ function buildQueryString(filterOptions: IExpenseFilter): string {
 
     queryString += paid;
 
+    if(filterOptions.title != ""){
+        queryString += `&title=${filterOptions.title}`
+    }
+
     const year = parseInt(filterOptions.year);
     const month = parseInt(filterOptions.month);
     const nextMonth = month + 1;
