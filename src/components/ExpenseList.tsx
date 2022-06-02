@@ -65,6 +65,16 @@ const ExpenseList: React.FC = () => {
             ))
           }
         </tbody>
+        <tfoot>
+          <tr>
+            <td colSpan={2}><strong>Total</strong></td>
+            <td>
+              {
+                expenses && expenses.reduce((sum, cur) => sum + cur.cost, 0)
+              }
+            </td>
+          </tr>
+        </tfoot>
       </table>            
     </div>
   );
