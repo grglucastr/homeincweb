@@ -1,6 +1,11 @@
 import { useState } from "react";
 import IExpenseFilter from "../../models/IExpenseFilter";
 
+import { InputText } from 'primereact/inputtext';
+import { Dropdown } from 'primereact/dropdown';
+import { Button } from 'primereact/button';
+import { Checkbox } from 'primereact/checkbox';
+
 import './expenseFilter.css';
 
 
@@ -31,11 +36,11 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
         <ul>
           <li>
             <label htmlFor="id">ID:</label>
-            <input type="text"  id="id" value={id} onChange={e => setId(e.target.value)}/>
+            <InputText id="id" value={id} onChange={e => setId(e.target.value)} />
           </li>
           <li>
             <label htmlFor="title">Title:</label>
-            <input type="text"  id="title" value={title} onChange={e => setTitle(e.target.value)}/>
+            <InputText id="title" value={title} onChange={e => setTitle(e.target.value)}/>
           </li>
           <li>
             <label htmlFor="year">Year:</label>
@@ -57,12 +62,13 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
             </select>
           </li>
           <li>
-            <label htmlFor="paid">Paid
-              <input type="checkbox"  id="paid" checked={paid} onChange={() => setPaid(!paid)} />
+            <label htmlFor="paid">
+              <Checkbox onChange={e => setPaid(!paid)} checked={paid}></Checkbox>
+              Paid
             </label>
           </li>
           <li>
-            <button id="expenseSearch">Search</button>
+            <Button label="Search" />
           </li>
         </ul>
         

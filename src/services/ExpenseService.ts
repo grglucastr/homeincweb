@@ -30,7 +30,7 @@ function buildQueryString(filterOptions: IExpenseFilter): string {
 
     queryString += paid;
 
-    if(filterOptions.title != ""){
+    if(filterOptions.title !== ""){
         queryString += `&title=${filterOptions.title}`
     }
 
@@ -50,7 +50,7 @@ function buildQueryString(filterOptions: IExpenseFilter): string {
 
     queryString += `&dueDateStart=${year}-${monthStr}-01`;
 
-    if(month == 12){
+    if(month === 12){
         const nextYear = year + 1;
         queryString += `&dueDateEnd=${nextYear}-01-01`;
     }else{

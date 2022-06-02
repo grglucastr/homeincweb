@@ -6,6 +6,9 @@ import ExpenseListItem from "./ExpenseListItem";
 import ExpenseFilter from "./expenseFilter/ExpenseFilter";
 import IExpenseFilter from "../models/IExpenseFilter";
 
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+
 const ExpenseList: React.FC = () => {
 
   const [expenses, setExpenses] = useState<Array<IExpense>>([]);
@@ -45,37 +48,16 @@ const ExpenseList: React.FC = () => {
   return (
     <div>
       <ExpenseFilter onSearchFilter={(filterOptions:IExpenseFilter) => retrieveExpensesWithOptions(filterOptions)}/>
-
-
-      <table style={{"borderWidth":"1px", 'borderColor':"#aaaaaa", 'borderStyle':'solid'}}>
-        <thead>
-          <tr>
-            <th>Id</th>
-            <th>Title</th>
-            <th>Cost</th>
-            <th>Due Date</th>
-            <th>Paid?</th>
-            <th>Payment Method</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            expenses && expenses.map((exp, index) => (
-              <ExpenseListItem key={index} expense={exp}  />
-            ))
-          }
-        </tbody>
-        <tfoot>
-          <tr>
-            <td colSpan={2}><strong>Total</strong></td>
-            <td>
-              {
-                expenses && expenses.reduce((sum, cur) => sum + cur.cost, 0)
-              }
-            </td>
-          </tr>
-        </tfoot>
-      </table>            
+      <div className="card">
+        <DataTable value={expenses}>
+          <Column field="id" header="Id"></Column>
+          <Column field="title" header="Title"></Column>
+          <Column field="cost" header="Cost"></Column>
+          <Column field="dueDate" header="Due Date"></Column>
+          <Column field="paid" header="Paid"></Column>
+          <Column field="paymentMethod" header="Payment Method"></Column>
+        </DataTable> 
+      </div>            
     </div>
   );
 
