@@ -6,8 +6,7 @@ import ExpenseListItem from "./ExpenseListItem";
 import ExpenseFilter from "./expenseFilter/ExpenseFilter";
 import IExpenseFilter from "../models/IExpenseFilter";
 
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
+import { Table } from "react-bootstrap";
 
 const ExpenseList: React.FC = () => {
 
@@ -48,15 +47,39 @@ const ExpenseList: React.FC = () => {
   return (
     <div>
       <ExpenseFilter onSearchFilter={(filterOptions:IExpenseFilter) => retrieveExpensesWithOptions(filterOptions)}/>
-      <div className="card">
-        <DataTable value={expenses}>
-          <Column field="id" header="Id"></Column>
-          <Column field="title" header="Title"></Column>
-          <Column field="cost" header="Cost"></Column>
-          <Column field="dueDate" header="Due Date"></Column>
-          <Column field="paid" header="Paid"></Column>
-          <Column field="paymentMethod" header="Payment Method"></Column>
-        </DataTable> 
+      
+      <div className={expenses.length > 0 ? 'card': ''} style={{marginTop: '20px'}}>
+        <Table striped={true}>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Cost</th>
+              <th>Due Date</th>
+              <th>Paid</th>
+              <th>Payment Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              expenses.map((e, index) => (
+                <ExpenseListItem key={index} expense={e} />
+              ))
+            }
+          </tbody>
+          <tfoot>
+            <tr>
+              <td></td>
+              <td><strong>Total</strong></td>
+              <td>
+                <strong>
+                { expenses.reduce((acc, element) => acc + element.cost, 0) }
+                </strong>
+              </td>
+              <td colSpan={3}></td>
+            </tr>
+          </tfoot>
+        </Table>
       </div>            
     </div>
   );

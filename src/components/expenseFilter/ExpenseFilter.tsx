@@ -1,11 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Row, Col, Button } from "react-bootstrap";
 import IExpenseFilter from "../../models/IExpenseFilter";
 
-import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
-import { Button } from 'primereact/button';
-import { Checkbox } from 'primereact/checkbox';
-
+import Form from 'react-bootstrap/Form';
 import './expenseFilter.css';
 
 
@@ -16,6 +13,21 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
   const [year, setYear] = useState<string>("");
   const [month, setMonth] = useState<string>("");
   const [paid, setPaid] = useState<boolean>(false);
+
+  const years = [
+    {label: '2020', value:'2020'},
+    {label: '2021', value:'2021'},
+    {label: '2022', value:'2022'},
+  ];
+
+  const months = [
+    {label: '1', value:'1'},
+    {label: '2', value:'2'},
+    {label: '3', value:'3'},
+    {label: '4', value:'4'},
+    {label: '5', value:'5'},
+    {label: '6', value:'6'}
+  ]
 
 
   const formSubmit = (e: any) => {
@@ -32,47 +44,75 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
 
   return(
     <div>
-      <form id="expenseFilterForm" className="expense-filter-form" onSubmit={formSubmit} >
-        <ul>
-          <li>
-            <label htmlFor="id">ID:</label>
-            <InputText id="id" value={id} onChange={e => setId(e.target.value)} />
-          </li>
-          <li>
-            <label htmlFor="title">Title:</label>
-            <InputText id="title" value={title} onChange={e => setTitle(e.target.value)}/>
-          </li>
-          <li>
-            <label htmlFor="year">Year:</label>
-            <select name="year" id="year" value={year} onChange={e => setYear(e.target.value)}>
-              <option value="2020">2020</option>
-              <option value="2021">2021</option>
-              <option value="2022">2022</option>
-            </select>
-          </li>
-          <li>
-            <label htmlFor="month">Month:</label>
-            <select name="month" id="month" value={month} onChange={e => setMonth(e.target.value)}>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-            </select>
-          </li>
-          <li>
-            <label htmlFor="paid">
-              <Checkbox onChange={e => setPaid(!paid)} checked={paid}></Checkbox>
-              Paid
-            </label>
-          </li>
-          <li>
-            <Button label="Search" />
-          </li>
-        </ul>
-        
-      </form>
+      <Form onSubmit={formSubmit}>
+        <Row>
+          <Col>
+            <Form.Group>
+              <Form.Label htmlFor="id">ID:</Form.Label>
+              <Form.Control id="id" type="text" value={id} onChange={e => setId(e.target.value) }/>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group>
+              <Form.Label htmlFor="title">Title:</Form.Label>
+              <Form.Control id="title" type="text" value={title} onChange={e => setTitle(e.target.value) }/>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group>
+              <Form.Label htmlFor="">&nbsp;</Form.Label>
+              <Form.Select
+                className="form-control"  
+                aria-label="Year"
+                value={year}
+                onChange={e => setYear(e.target.value)}>
+                <option>Year</option>
+                <option value="2020">2020</option>
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group>
+              <Form.Label htmlFor="">&nbsp;</Form.Label>
+              <Form.Select
+                className="form-control" 
+                aria-label="Month"
+                value={month}
+                onChange={e => setMonth(e.target.value)}>
+                <option>Month</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+              </Form.Select>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group>
+              <Form.Label htmlFor="">&nbsp;</Form.Label>
+              <Form.Check 
+                checked={paid}
+                type="checkbox"
+                id="check-paid"
+                label="Paid"
+                onChange={()=> setPaid(!paid)}>
+              </Form.Check>
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group>
+              <Form.Label htmlFor="">&nbsp;</Form.Label>
+              <div>
+                <Button type="submit" variant="primary">Search</Button>
+              </div>
+            </Form.Group>
+          </Col>
+        </Row>      
+      </Form>
     </div>
   )
 }
