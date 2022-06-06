@@ -1,14 +1,29 @@
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import ExpenseList from './components/ExpenseList';
+import ExpenseForm from './components/ExpenseForm';
+
 import { Container } from 'react-bootstrap';
+
+import { 
+  Routes,
+  Route,
+  Link
+} from "react-router-dom";
 
 function App() {
   return (
     <Container>
-      <h1>Home Inc.</h1>
-      <ExpenseList />
+        <Link to="/">
+          <h1>Home Inc.</h1>
+        </Link>
+        
+        <Routes>
+          <Route path="/" element={<ExpenseList />} />
+          <Route path='/form' element={<ExpenseForm />} />
+        </Routes>
     </Container>
+    
   );
 }
 

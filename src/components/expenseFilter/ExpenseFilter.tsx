@@ -4,7 +4,7 @@ import IExpenseFilter from "../../models/IExpenseFilter";
 
 import Form from 'react-bootstrap/Form';
 import './expenseFilter.css';
-
+import { Link } from "react-router-dom";
 
 const ExpenseFilter = ({onSearchFilter}: any) => {
 
@@ -115,7 +115,9 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
             <Form.Group>
               <Form.Label htmlFor="">&nbsp;</Form.Label>
               <div style={{textAlign: 'right'}}>
-                <Button type="submit" variant="secondary">Add New</Button>
+                <Link to="/form">
+                  <Button type="submit" variant="secondary">Add New</Button>
+                </Link>
               </div>
             </Form.Group>
           </Col>
