@@ -111,6 +111,14 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
               </div>
             </Form.Group>
           </Col>
+          <Col>
+            <Form.Group>
+              <Form.Label htmlFor="">&nbsp;</Form.Label>
+              <div style={{textAlign: 'right'}}>
+                <Button type="submit" variant="secondary">Add New</Button>
+              </div>
+            </Form.Group>
+          </Col>
         </Row>      
       </Form>
     </div>

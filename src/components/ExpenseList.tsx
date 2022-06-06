@@ -6,7 +6,7 @@ import ExpenseListItem from "./ExpenseListItem";
 import ExpenseFilter from "./expenseFilter/ExpenseFilter";
 import IExpenseFilter from "../models/IExpenseFilter";
 
-import { Table } from "react-bootstrap";
+import { Alert, Table } from "react-bootstrap";
 
 const ExpenseList: React.FC = () => {
 
@@ -47,9 +47,14 @@ const ExpenseList: React.FC = () => {
   return (
     <div>
       <ExpenseFilter onSearchFilter={(filterOptions:IExpenseFilter) => retrieveExpensesWithOptions(filterOptions)}/>
-      
-      <div className={expenses.length > 0 ? 'card': ''} style={{marginTop: '20px'}}>
-        <Table striped={true}>
+
+      <div className="card" style={{marginTop: '20px'}}>
+
+        <Alert variant="secondary" hidden={expenses.length > 0} >
+          0 Results. The search criteria has not found any result.
+        </Alert>
+
+        <Table striped={true} hidden={expenses.length === 0} >
           <thead>
             <tr>
               <th>ID</th>
@@ -80,7 +85,7 @@ const ExpenseList: React.FC = () => {
             </tr>
           </tfoot>
         </Table>
-      </div>            
+      </div>      
     </div>
   );
 

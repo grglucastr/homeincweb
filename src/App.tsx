@@ -7,7 +7,7 @@ import { Container } from 'react-bootstrap';
 function App() {
   return (
     <Container>
-      <h1>Home inc WEB</h1>
+      <h1>Home Inc.</h1>
       <ExpenseList />
     </Container>
   );
