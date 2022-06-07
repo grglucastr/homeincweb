@@ -20,6 +20,11 @@ const getExpenseById = (id: number) => {
     return http.get<IExpense>(`/expenses/${id}`);
 }
 
+const postExpense = (expense: IExpense) => {
+    return http.post<IExpense>('/expenses/', expense);
+}
+
+
 function buildQueryString(filterOptions: IExpenseFilter): string {
     
     let queryString = "/expenses?";
@@ -63,7 +68,8 @@ function buildQueryString(filterOptions: IExpenseFilter): string {
 const ExpenseService = {
     getAll,
     getExpenseById,
-    getExpensesWithFilter
+    getExpensesWithFilter,
+    postExpense
 };
 
 export default ExpenseService;
