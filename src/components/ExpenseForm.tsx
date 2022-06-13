@@ -1,6 +1,8 @@
 import React, {useState, useEffect, FormEventHandler} from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Alert } from 'react-bootstrap';
 import IExpense from '../models/IExpense';
+
+import ExpenseService from '../services/ExpenseService';
 
 const ExpenseForm: React.FC = () => {
 
@@ -14,11 +16,12 @@ const ExpenseForm: React.FC = () => {
   const [periodicity, setPeriodicity] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [typableLine, setTypableLine] = useState<string>("");
+  const [showSuccess, setShowSuccess] = useState<boolean>(false);
+  const [showError, setShowError] = useState<boolean>(false);
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('form submission');
-    
+
     const expense: IExpense = {
       title, 
       description, 
@@ -31,12 +34,31 @@ const ExpenseForm: React.FC = () => {
       paymentMethod,
       typableLine
     };      
-    
+
+    ExpenseService.postExpense(expense)
+    .then((response: any)=>{
+      console.log('response: ', response);
+
+      if(response.status === 201){
+        setShowSuccess(true);
+        setShowError(false);
+      }
+    })
+    .catch((err:any) => {
+      console.error(err);
+      setShowError(true);
+      setShowSuccess(false);
+    });
+
   }
 
 
   return(
     <div>
+
+      <Alert key='success' variant='success' hidden={!showSuccess} >Expense registered!</Alert>
+      <Alert key='warning' variant='warning' hidden={!showError}>Something wrong happened, please try again later.</Alert>
+
       <Form onSubmit={submitForm} >
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Title</Form.Label>
