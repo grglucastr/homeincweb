@@ -106,7 +106,7 @@ const ExpenseForm: React.FC = () => {
                     onChange={e => setTitle(e.target.value)}/>
                 </Form.Group>
               </Col>
-              <Col xs={12} md={4}>
+              <Col xs={12} md={2}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label htmlFor="cost">Cost</Form.Label>
                   <Form.Control
@@ -116,6 +116,13 @@ const ExpenseForm: React.FC = () => {
                     value={cost} 
                     onChange={e => setCost(e.target.value)} />
                 </Form.Group>
+              </Col>
+              <Col xs={12} md={2}>
+                <Form.Label htmlFor="status">Status</Form.Label>
+                <Alert 
+                  key='warning'
+                  variant='warning'
+                  style={{marginTop:'20px'}}>Waiting Payment</Alert>
               </Col>
             </Row>
 
