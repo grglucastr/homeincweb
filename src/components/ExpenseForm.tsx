@@ -121,8 +121,7 @@ const ExpenseForm: React.FC = () => {
                 <Form.Label htmlFor="status">Status</Form.Label>
                 <Alert 
                   key='warning'
-                  variant='warning'
-                  style={{marginTop:'20px'}}>Waiting Payment</Alert>
+                  variant='warning'>Waiting Payment</Alert>
               </Col>
             </Row>
 
