@@ -61,19 +61,19 @@ const ExpenseForm: React.FC = () => {
   }
 
   const dueDateChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date, dateString);
+    setDueDate(dateString)
   };
 
   const invoiceDateChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date, dateString);
+    setInvoiceDate(dateString);
   };
 
   const startDateChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date, dateString);
+    setPeriodStart(dateString);
   };
 
   const endDateChange: DatePickerProps['onChange'] = (date, dateString) => {
-    console.log(date, dateString);
+    setPeriodEnd(dateString);
   };
 
   return(
@@ -96,23 +96,19 @@ const ExpenseForm: React.FC = () => {
           <Form onSubmit={submitForm} >
             <Row>
               <Col xs={12} md={8}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor="title">Title</Form.Label>
+                <Form.Group className="mb-3" controlId="title">
+                  <Form.Label>Title</Form.Label>
                   <Form.Control
-                    id="title"
                     type="text"
-                    placeholder="[COPEL] - Conta de Eletricidade"
                     value={title}
                     onChange={e => setTitle(e.target.value)}/>
                 </Form.Group>
               </Col>
               <Col xs={12} md={2}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor="cost">Cost</Form.Label>
+                <Form.Group className="mb-3" controlId="cost">
+                  <Form.Label>Cost</Form.Label>
                   <Form.Control
-                    id="cost"
                     type="text" 
-                    placeholder="220.90"
                     value={cost} 
                     onChange={e => setCost(e.target.value)} />
                 </Form.Group>
@@ -127,12 +123,10 @@ const ExpenseForm: React.FC = () => {
 
             <Row>
               <Col>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor="description">Description</Form.Label>
+                <Form.Group className="mb-3" controlId="description">
+                  <Form.Label>Description</Form.Label>
                   <Form.Control
-                    id="description" 
                     type="text" 
-                    placeholder="Conta referente ao mês de abril"
                     value={description}
                     onChange={e => setDescription(e.target.value)}/>
                   </Form.Group>
@@ -141,37 +135,33 @@ const ExpenseForm: React.FC = () => {
 
             <Row>
               <Col xs={12} md={3}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor="dueDate">Due Date</Form.Label>
+                <Form.Group className="mb-3" controlId="dueDate">
+                  <Form.Label>Due Date</Form.Label>
                   <DatePicker
-                    id='dueDate'
                     className='form-control'
                     onChange={dueDateChange}/>
                 </Form.Group>
               </Col>
               <Col xs={12} md={3}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor="invoiceDate">Invoice Date</Form.Label>
+                <Form.Group className="mb-3" controlId="invoiceDate">
+                  <Form.Label>Invoice Date</Form.Label>
                   <DatePicker
-                    id='invoiceDate'
                     className='form-control'
                     onChange={invoiceDateChange}/>
                 </Form.Group>
               </Col>
               <Col xs={12} md={3}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor="periodStart">Period Start</Form.Label>
+                <Form.Group className="mb-3" controlId="periodStart">
+                  <Form.Label>Period Start</Form.Label>
                   <DatePicker
-                    id='periodStart'
                     className='form-control'
                     onChange={startDateChange}/>
                 </Form.Group>
               </Col>
               <Col xs={12} md={3}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor="periodEnd">Period End</Form.Label>
+                <Form.Group className="mb-3" controlId="endDate">
+                  <Form.Label>Period End</Form.Label>
                   <DatePicker
-                    id='endDate'
                     className='form-control'
                     onChange={endDateChange}/>
                 </Form.Group>
@@ -180,10 +170,9 @@ const ExpenseForm: React.FC = () => {
 
             <Row>
               <Col xs={12} md={6}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor="periodicity">Periodicity</Form.Label>
+                <Form.Group className="mb-3" controlId="periodicity">
+                  <Form.Label>Periodicity</Form.Label>
                   <Form.Select
-                    id="periodicity" 
                     aria-label="Default select example" 
                     className="form-control"
                     value={periodicity}
@@ -198,10 +187,9 @@ const ExpenseForm: React.FC = () => {
                 </Form.Group>
               </Col>
               <Col xs={12} md={6}>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor="paymentMethod">Payment Method</Form.Label>
+                <Form.Group className="mb-3" controlId="paymentMethod">
+                  <Form.Label>Payment Method</Form.Label>
                   <Form.Select
-                    id="paymentMethod" 
                     aria-label="Default select example" 
                     className="form-control"
                     value={paymentMethod}
@@ -220,12 +208,10 @@ const ExpenseForm: React.FC = () => {
 
             <Row>
               <Col>
-                <Form.Group className="mb-3" controlId="formBasicEmail">
-                  <Form.Label htmlFor='typableLine'>Typable Line</Form.Label>
+                <Form.Group className="mb-3" controlId="typableLine">
+                  <Form.Label>Typable Line</Form.Label>
                   <Form.Control
-                    id="typableLine"
                     type="text" 
-                    placeholder="84660000000-0 00000000002-2 20000000000-6 00248334881-5"
                     value={typableLine}
                     onChange={e => setTypableLine(e.target.value)}/>
                 </Form.Group>
