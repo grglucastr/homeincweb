@@ -12,7 +12,7 @@ const ExpenseListItem: React.FC<Props> = ({expense}) => {
       <td>{expense.title}</td>
       <td>{expense.cost}</td>
       <td>{expense.dueDate}</td>
-      <td>{expense.paid && expense.paid.toString()}</td>
+      <td>{expense.paid !== undefined && expense.paid.toString()}</td>
       <td>{expense.paymentMethod}</td>
     </tr>
   )
