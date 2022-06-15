@@ -1,17 +1,23 @@
 import React, {useState} from "react";
 import { Button } from "react-bootstrap";
-import IExepense from '../models/IExpense';
+import IExpense from '../models/IExpense';
 import ExpensePaymentModal from "./ExpensePaymentModal";
 
 type Props = {
-  expense: IExepense;
+  expense: IExpense;
 }
 
 const ExpenseListItem: React.FC<Props> = ({expense}) => {
 
   const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
+  const [selectedExpense, setSelectedExpense] = useState<IExpense>({cost:0});
 
-  const handleShowPaymentModal = (e: any) => setShowPaymentModal(true);
+
+  const handleShowPaymentModal = (expense: IExpense) => {
+    setSelectedExpense(expense);
+    setShowPaymentModal(true);
+  }
+
   const handleClosePaymentModal = () => setShowPaymentModal(false);
 
   const isPaid = (isPaid: any):boolean => {
@@ -23,7 +29,11 @@ const ExpenseListItem: React.FC<Props> = ({expense}) => {
 
   return(
     <>
-      <ExpensePaymentModal showModal={showPaymentModal} handleClose={handleClosePaymentModal} />
+      <ExpensePaymentModal 
+        showModal={showPaymentModal}
+        expense={selectedExpense}
+        handleClose={handleClosePaymentModal} />
+
       <tr>
         <td>{expense.id}</td>
         <td>{expense.title}</td>
@@ -36,7 +46,7 @@ const ExpenseListItem: React.FC<Props> = ({expense}) => {
               type="button" 
               variant="outline-success" 
               size="sm"
-              onClick={handleShowPaymentModal}>
+              onClick={() => handleShowPaymentModal(expense)}>
                 Pay
             </Button> }
         </td>
