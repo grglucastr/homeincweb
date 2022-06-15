@@ -24,6 +24,10 @@ const postExpense = (expense: IExpense) => {
     return http.post<IExpense>('/expenses/', expense);
 }
 
+const payExpense = (id: number) => {
+    return http.post<IExpense>(`/expenses/${id}/pay`);
+}
+
 
 function buildQueryString(filterOptions: IExpenseFilter): string {
     
@@ -69,7 +73,8 @@ const ExpenseService = {
     getAll,
     getExpenseById,
     getExpensesWithFilter,
-    postExpense
+    postExpense, 
+    payExpense
 };
 
 export default ExpenseService;
