@@ -22,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<ExpenseList />} />
           <Route path='/form' element={<ExpenseForm />} />
+          <Route path='/form/:id' element={<ExpenseForm />} />
         </Routes>
     </Container>
     

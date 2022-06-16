@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import IExpense from '../models/IExpense';
 import ExpensePaymentModal from "./ExpensePaymentModal";
 
@@ -57,7 +58,9 @@ const ExpenseListItem: React.FC<Props> = ({expense, onItemUpdate}) => {
             </Button> }
         </td>
         <td>
-          <Button type="button" variant="outline-info" size="sm">Details</Button>
+          <Link to={`/form/${expense.id}`} >
+            <Button type="button" variant="outline-info" size="sm">Details</Button>
+          </Link>
         </td>
       </tr>
     </>    

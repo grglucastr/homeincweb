@@ -1,18 +1,21 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Form, Alert, Row, Col, Card } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import IExpense from '../models/IExpense';
 
+import IExpense from '../models/IExpense';
 import ExpenseService from '../services/ExpenseService';
+import ExpenseStatus from './ExpenseStatus';
 
 import type { DatePickerProps } from 'antd';
 import { DatePicker } from 'antd';
+import moment from 'moment';
 
 const ExpenseForm: React.FC = () => {
 
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [cost, setCost] = useState<string>("");
+  const [paid, setPaid] = useState<boolean>(false);
   const [dueDate, setDueDate] = useState<string>("");
   const [invoiceDate, setInvoiceDate] = useState<string>("");
   const [periodStart, setPeriodStart] = useState<string>("");
@@ -22,7 +25,36 @@ const ExpenseForm: React.FC = () => {
   const [typableLine, setTypableLine] = useState<string>("");
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
+  const [editing, setEditing] = useState<boolean>(false);
+  const { id } = useParams();
+  const dateFormat = 'YYYY-MM-DD';
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    if(id !== undefined){
+      setEditing(true);
+
+      ExpenseService.getExpenseById(parseInt(id))
+        .then((response:any) => {
+          const expense=response.data;
+
+          setTitle(expense.title);
+          setDescription(expense.description);
+          setCost(expense.cost);
+          setDueDate(expense.dueDate);
+          setInvoiceDate(expense.invoiceDate);
+          setPeriodStart(expense.servicePeriodStart);
+          setPeriodEnd(expense.servicePeriodEnd);
+          setPeriodicity(expense.periodicity);
+          setPaymentMethod(expense.paymentMethod);
+          setTypableLine(expense.typableLine);
+          setPaid(expense.paid);
+        })
+        .catch((err:any) => {
+          console.error(err);
+        });
+    }
+  }, []);
 
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -99,6 +131,7 @@ const ExpenseForm: React.FC = () => {
                 <Form.Group className="mb-3" controlId="title">
                   <Form.Label>Title</Form.Label>
                   <Form.Control
+                    readOnly={paid}
                     type="text"
                     value={title}
                     onChange={e => setTitle(e.target.value)}/>
@@ -109,15 +142,14 @@ const ExpenseForm: React.FC = () => {
                   <Form.Label>Cost</Form.Label>
                   <Form.Control
                     type="text" 
+                    readOnly={paid}
                     value={cost} 
                     onChange={e => setCost(e.target.value)} />
                 </Form.Group>
               </Col>
               <Col xs={12} md={2}>
                 <Form.Label htmlFor="status">Status</Form.Label>
-                <Alert 
-                  key='warning'
-                  variant='warning'>Waiting Payment</Alert>
+                <ExpenseStatus editing={editing} paid={paid} />
               </Col>
             </Row>
 
@@ -127,6 +159,7 @@ const ExpenseForm: React.FC = () => {
                   <Form.Label>Description</Form.Label>
                   <Form.Control
                     type="text" 
+                    readOnly={paid}
                     value={description}
                     onChange={e => setDescription(e.target.value)}/>
                   </Form.Group>
@@ -137,33 +170,49 @@ const ExpenseForm: React.FC = () => {
               <Col xs={12} md={3}>
                 <Form.Group className="mb-3" controlId="dueDate">
                   <Form.Label>Due Date</Form.Label>
-                  <DatePicker
-                    className='form-control'
-                    onChange={dueDateChange}/>
+                  {
+                    paid ?
+                      <div>{dueDate}</div> :
+                      <DatePicker
+                        className='form-control'
+                        onChange={dueDateChange}/>
+                  }
                 </Form.Group>
               </Col>
               <Col xs={12} md={3}>
                 <Form.Group className="mb-3" controlId="invoiceDate">
                   <Form.Label>Invoice Date</Form.Label>
-                  <DatePicker
-                    className='form-control'
-                    onChange={invoiceDateChange}/>
+                  {
+                    paid ? 
+                      <div>{invoiceDate}</div> : 
+                      <DatePicker
+                        className='form-control'
+                        onChange={invoiceDateChange}/>
+                  }
                 </Form.Group>
               </Col>
               <Col xs={12} md={3}>
                 <Form.Group className="mb-3" controlId="periodStart">
                   <Form.Label>Period Start</Form.Label>
-                  <DatePicker
-                    className='form-control'
-                    onChange={startDateChange}/>
+                  {
+                    paid ? 
+                      <div>{periodStart}</div> : 
+                      <DatePicker
+                        className='form-control'
+                        onChange={startDateChange}/>
+                  }
                 </Form.Group>
               </Col>
               <Col xs={12} md={3}>
                 <Form.Group className="mb-3" controlId="endDate">
                   <Form.Label>Period End</Form.Label>
-                  <DatePicker
-                    className='form-control'
-                    onChange={endDateChange}/>
+                  {
+                    paid ? 
+                      <div>{periodEnd}</div> : 
+                      <DatePicker
+                        className='form-control'
+                        onChange={endDateChange}/>
+                  }
                 </Form.Group>
               </Col>
             </Row>
@@ -176,6 +225,7 @@ const ExpenseForm: React.FC = () => {
                     aria-label="Default select example" 
                     className="form-control"
                     value={periodicity}
+                    disabled={paid}
                     onChange={e => setPeriodicity(e.target.value)}>
                     <option>Select Periodicity</option>
                     <option value="just_once">Just Once</option>
@@ -193,6 +243,7 @@ const ExpenseForm: React.FC = () => {
                     aria-label="Default select example" 
                     className="form-control"
                     value={paymentMethod}
+                    disabled={paid}
                     onChange={e => setPaymentMethod(e.target.value)}>
                     <option>Select Payment Method</option>
                     <option value="cash">Cash</option>
@@ -211,7 +262,8 @@ const ExpenseForm: React.FC = () => {
                 <Form.Group className="mb-3" controlId="typableLine">
                   <Form.Label>Typable Line</Form.Label>
                   <Form.Control
-                    type="text" 
+                    type="text"
+                    readOnly={paid}
                     value={typableLine}
                     onChange={e => setTypableLine(e.target.value)}/>
                 </Form.Group>
@@ -221,7 +273,13 @@ const ExpenseForm: React.FC = () => {
             <Row>
               <Col style={{textAlign: 'center'}}>
                 <Form.Group>
-                  <Button type="submit" variant="primary" style={{width:'100%'}}>Save</Button>
+                  <Button 
+                    hidden={paid}
+                    type="submit" 
+                    variant="primary" 
+                    style={{width:'100%'}}>
+                      Save
+                  </Button>
                 </Form.Group>
               </Col>
             </Row>
