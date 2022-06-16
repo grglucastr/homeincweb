@@ -26,9 +26,9 @@ const ExpenseList: React.FC = () => {
 
   const updateExpenseItem = (expense: IExpense) => {
     const updatedExpenses:Array<IExpense> = expenses
-      .filter(exp => exp.id !== expense.id);
-      
-    setExpenses([...updatedExpenses]);
+      .filter(exp => exp.id !== expense.id && exp.paid !== expense.paid);
+    
+    setExpenses(updatedExpenses);
   }
 
   const retrieveExpensesWithOptions = (filterOptions: IExpenseFilter) => {

@@ -14,13 +14,17 @@ const ExpensePaymentModal: React.FC<Props> = ({showModal, expense, handleClose})
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
   const [showFail, setShowFail] = useState<boolean>(false);
   const [showPayButton, setShowPayButton] = useState<boolean>(true);
+  const [expenseObj, setExpenseObj] = useState<IExpense>(expense);
 
 
   const confirmPayment = (id: number) => {
     ExpenseService.payExpense(id).then((response:any) => {
-      console.log('response: {}', response);
-      expense.paid=true;
-      
+      const updatedExpense:IExpense = {
+        ...expense,
+        paid:true
+      };
+
+      setExpenseObj(updatedExpense);
       setShowSuccess(true);
       setShowFail(false);
       setShowPayButton(false);
@@ -34,14 +38,14 @@ const ExpensePaymentModal: React.FC<Props> = ({showModal, expense, handleClose})
 
   return(
     <>
-      <Modal show={showModal} onHide={() => handleClose(expense)}>
+      <Modal show={showModal} onHide={() => handleClose(expenseObj)}>
         <Modal.Header>
           <Modal.Title>Confirm Payment</Modal.Title>
           <button 
             type="button" 
             className="close" 
             aria-label="Close"
-            onClick={() => handleClose(expense)}>
+            onClick={() => handleClose(expenseObj)}>
             <span aria-hidden="true">&times;</span>
           </button>
         </Modal.Header>
@@ -66,7 +70,7 @@ const ExpensePaymentModal: React.FC<Props> = ({showModal, expense, handleClose})
 
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => handleClose(expense)}>
+          <Button variant="secondary" onClick={() => handleClose(expenseObj)}>
             Close
           </Button>
           <Button 

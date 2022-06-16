@@ -20,7 +20,9 @@ const ExpenseListItem: React.FC<Props> = ({expense, onItemUpdate}) => {
   }
 
   const handleClosePaymentModal = (expense: IExpense) => {
-    onItemUpdate(expense);
+    if(expense.paid !== undefined && expense.paid !== selectedExpense.paid){
+      onItemUpdate(expense);
+    }
     setShowPaymentModal(false);
   }
 
