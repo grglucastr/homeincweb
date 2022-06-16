@@ -24,6 +24,13 @@ const ExpenseList: React.FC = () => {
     });
   }
 
+  const updateExpenseItem = (expense: IExpense) => {
+    const updatedExpenses:Array<IExpense> = expenses
+      .filter(exp => exp.id !== expense.id);
+      
+    setExpenses([...updatedExpenses]);
+  }
+
   const retrieveExpensesWithOptions = (filterOptions: IExpenseFilter) => {
 
     if(filterOptions.id > 0){
@@ -68,7 +75,10 @@ const ExpenseList: React.FC = () => {
           <tbody>
             {
               expenses.map((e, index) => (
-                <ExpenseListItem key={index} expense={e} />
+                <ExpenseListItem
+                  onItemUpdate={(expense) => updateExpenseItem(expense)} 
+                  key={index} 
+                  expense={e} />
               ))
             }
           </tbody>

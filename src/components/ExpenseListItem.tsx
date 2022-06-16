@@ -5,9 +5,10 @@ import ExpensePaymentModal from "./ExpensePaymentModal";
 
 type Props = {
   expense: IExpense;
+  onItemUpdate: (expense: IExpense) => void;
 }
 
-const ExpenseListItem: React.FC<Props> = ({expense}) => {
+const ExpenseListItem: React.FC<Props> = ({expense, onItemUpdate}) => {
 
   const [showPaymentModal, setShowPaymentModal] = useState<boolean>(false);
   const [selectedExpense, setSelectedExpense] = useState<IExpense>({cost:0});
@@ -18,7 +19,10 @@ const ExpenseListItem: React.FC<Props> = ({expense}) => {
     setShowPaymentModal(true);
   }
 
-  const handleClosePaymentModal = () => setShowPaymentModal(false);
+  const handleClosePaymentModal = (expense: IExpense) => {
+    onItemUpdate(expense);
+    setShowPaymentModal(false);
+  }
 
   const isPaid = (isPaid: any):boolean => {
     if(isPaid !== undefined){
@@ -32,7 +36,7 @@ const ExpenseListItem: React.FC<Props> = ({expense}) => {
       <ExpensePaymentModal 
         showModal={showPaymentModal}
         expense={selectedExpense}
-        handleClose={handleClosePaymentModal} />
+        handleClose={(expense) => handleClosePaymentModal(expense)} />
 
       <tr>
         <td>{expense.id}</td>

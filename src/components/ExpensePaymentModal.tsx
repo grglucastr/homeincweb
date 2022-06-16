@@ -6,7 +6,7 @@ import ExpenseService from "../services/ExpenseService";
 type Props = {
   showModal: boolean;
   expense: IExpense;
-  handleClose: () => void;
+  handleClose: (expense: IExpense) => void;
 }
 
 const ExpensePaymentModal: React.FC<Props> = ({showModal, expense, handleClose}) => {
@@ -19,6 +19,8 @@ const ExpensePaymentModal: React.FC<Props> = ({showModal, expense, handleClose})
   const confirmPayment = (id: number) => {
     ExpenseService.payExpense(id).then((response:any) => {
       console.log('response: {}', response);
+      expense.paid=true;
+      
       setShowSuccess(true);
       setShowFail(false);
       setShowPayButton(false);
@@ -32,14 +34,14 @@ const ExpensePaymentModal: React.FC<Props> = ({showModal, expense, handleClose})
 
   return(
     <>
-      <Modal show={showModal} onHide={handleClose}>
+      <Modal show={showModal} onHide={() => handleClose(expense)}>
         <Modal.Header>
           <Modal.Title>Confirm Payment</Modal.Title>
           <button 
             type="button" 
             className="close" 
             aria-label="Close"
-            onClick={handleClose}>
+            onClick={() => handleClose(expense)}>
             <span aria-hidden="true">&times;</span>
           </button>
         </Modal.Header>
@@ -61,10 +63,11 @@ const ExpensePaymentModal: React.FC<Props> = ({showModal, expense, handleClose})
           <h6><strong>{expense.title}</strong></h6>
           <div><span>Due Date: {expense.dueDate}</span></div>
           <div><span>Payment Method: {expense.paymentMethod}</span></div>
+
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Cancel
+          <Button variant="secondary" onClick={() => handleClose(expense)}>
+            Close
           </Button>
           <Button 
             variant="success"
