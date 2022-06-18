@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Button, Modal, Alert } from "react-bootstrap";
-import IExpense from '../models/IExpense';
-import ExpenseService from "../services/ExpenseService";
+import IExpense from '../../models/IExpense';
+import ExpenseService from "../../services/ExpenseService";
 
 type Props = {
   showModal: boolean;

@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import IExpense from '../models/IExpense';
-import ExpensePaymentModal from "./ExpensePaymentModal";
+import ExpensePaymentModal from "./modals/ExpensePaymentModal";
 
 type Props = {
   expense: IExpense;
