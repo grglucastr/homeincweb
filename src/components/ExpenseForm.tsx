@@ -8,10 +8,11 @@ import ExpenseStatus from './ExpenseStatus';
 
 import type { DatePickerProps } from 'antd';
 import { DatePicker } from 'antd';
-import moment from 'moment';
+import ExpenseInvalidateModal from './modals/ExpenseInvalidateModal';
 
 const ExpenseForm: React.FC = () => {
 
+  // Form fields
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [cost, setCost] = useState<string>("");
@@ -23,11 +24,15 @@ const ExpenseForm: React.FC = () => {
   const [periodicity, setPeriodicity] = useState<string>("");
   const [paymentMethod, setPaymentMethod] = useState<string>("");
   const [typableLine, setTypableLine] = useState<string>("");
+  
+  // UI controls
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
   const [showError, setShowError] = useState<boolean>(false);
   const [editing, setEditing] = useState<boolean>(false);
+  const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+  const [expenseEditing, setExpenseEditing] = useState<IExpense>({cost: 0});
+
   const { id } = useParams();
-  const dateFormat = 'YYYY-MM-DD';
   const navigate = useNavigate();
 
   useEffect(()=>{
@@ -49,6 +54,8 @@ const ExpenseForm: React.FC = () => {
           setPaymentMethod(expense.paymentMethod);
           setTypableLine(expense.typableLine);
           setPaid(expense.paid);
+
+          setExpenseEditing(expense);
         })
         .catch((err:any) => {
           console.error(err);
@@ -88,6 +95,19 @@ const ExpenseForm: React.FC = () => {
     });
   }
 
+  const deleteModalHandler = () => {
+    setShowDeleteModal(true);
+  }
+
+  const deleteModalClose = (expenseDeleted: IExpense) => {
+    setShowDeleteModal(false);
+
+    if(expenseEditing.isActive !== expenseDeleted.isActive){
+      navigate("/");
+    }
+  }
+  
+
   const returnList = () => {
     navigate("/");
   }
@@ -113,6 +133,12 @@ const ExpenseForm: React.FC = () => {
       <Alert key='success' variant='success' hidden={!showSuccess} >Expense registered!</Alert>
       <Alert key='warning' variant='warning' hidden={!showError}>Something wrong happened, please try again later.</Alert>
 
+      <ExpenseInvalidateModal
+        showModal={showDeleteModal}
+        expense={expenseEditing}
+        handleClose={deleteModalClose}
+        />
+
       <Card>
         <Card.Header as="h5">
           Expense Form Registration
@@ -127,7 +153,17 @@ const ExpenseForm: React.FC = () => {
         <Card.Body>
           <Form onSubmit={submitForm} >
             <Row>
-              <Col xs={12} md={8}>
+              <Col xs={12} md={2} hidden={!editing}>
+                <Form.Group className="mb-3" controlId="title">
+                  <Form.Label>ID</Form.Label>
+                  <Form.Control
+                    readOnly={true}
+                    type="text"
+                    value={id}/>
+                </Form.Group>
+              </Col>
+              
+              <Col xs={12} md={editing ? 6 : 8}>
                 <Form.Group className="mb-3" controlId="title">
                   <Form.Label>Title</Form.Label>
                   <Form.Control
@@ -271,6 +307,19 @@ const ExpenseForm: React.FC = () => {
             </Row>
             
             <Row>
+              <Col 
+                hidden={!editing || paid}
+                style={{textAlign: 'center'}}>
+                <Form.Group>
+                  <Button
+                    onClick={deleteModalHandler}
+                    type="button" 
+                    variant="danger" 
+                    style={{width:'100%'}}>
+                      Delete
+                  </Button>
+                </Form.Group>
+              </Col>
               <Col style={{textAlign: 'center'}}>
                 <Form.Group>
                   <Button 
