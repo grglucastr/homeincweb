@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Button } from "react-bootstrap";
-import IExpenseFilter from "../../models/IExpenseFilter";
+import { Link } from "react-router-dom";
 
+import { Row, Col, Button } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
 import './expenseFilter.css';
-import { Link } from "react-router-dom";
+
+
+import IExpenseFilter from "../../models/IExpenseFilter";
+import ExpenseService from "../../services/ExpenseService";
 
 const ExpenseFilter = ({onSearchFilter}: any) => {
 
@@ -13,13 +16,32 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
   const [year, setYear] = useState<string>("");
   const [month, setMonth] = useState<string>("");
   const [paid, setPaid] = useState<boolean>(false);
+  const [years, setYears] = useState<Array<number>>([]);
+  const [months, setMonths] = useState<Array<number>>([]);
 
-  const years = [
-    {label: '2020', value:'2020'},
-    {label: '2021', value:'2021'},
-    {label: '2022', value:'2022'},
-  ];
+  useEffect(() => {
+    ExpenseService.getExpensesYears()
+      .then((response: any) => {
+        setYears(response.data);
+      })
+      .catch((err: any) => {
+        console.error('Could not fetch the years corretly.', err);
+      });
+  }, []);
 
+
+  const onYearChange = (selectedYear: string) => {
+    setYear(selectedYear);
+    ExpenseService.getExpenseMonths(parseInt(selectedYear))
+      .then((response:any) => {
+        setMonths(response.data);
+      })
+      .catch((err:any) => {
+        console.error('Could not fetch the months for the selected year.', err);
+      })
+  }
+
+  /*
   const months = [
     {label: '1', value:'1'},
     {label: '2', value:'2'},
@@ -27,7 +49,7 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
     {label: '4', value:'4'},
     {label: '5', value:'5'},
     {label: '6', value:'6'}
-  ]
+  ]*/
 
 
   const formSubmit = (e: any) => {
@@ -65,11 +87,13 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
                 className="form-control"  
                 aria-label="Year"
                 value={year}
-                onChange={e => setYear(e.target.value)}>
-                <option>Year</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
+                onChange={e => onYearChange(e.target.value)}>
+                <option>Select Year</option>
+                {
+                  years.map((year:number) => (
+                    <option key={year} value={year}>{year}</option>
+                  ))
+                }
               </Form.Select>
             </Form.Group>
           </Col>
@@ -82,12 +106,11 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
                 value={month}
                 onChange={e => setMonth(e.target.value)}>
                 <option>Month</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
+                {
+                  months.map((month:number) => (
+                    <option key={month} value={month}>{month}</option>
+                  ))
+                }
               </Form.Select>
             </Form.Group>
           </Col>

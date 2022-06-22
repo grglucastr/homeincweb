@@ -32,6 +32,14 @@ const invalidateExpense = (id: number) => {
     return http.delete(`/expenses/${id}/invalidate`);
 }
 
+const getExpensesYears = () => {
+    return http.get(`/expenses/years`);
+}
+
+
+const getExpenseMonths = (year: number) => {
+    return http.get(`/expenses/years/${year}/months`);
+}
 
 function buildQueryString(filterOptions: IExpenseFilter): string {
     
@@ -79,7 +87,9 @@ const ExpenseService = {
     getExpensesWithFilter,
     postExpense, 
     payExpense,
-    invalidateExpense
+    invalidateExpense,
+    getExpensesYears,
+    getExpenseMonths
 };
 
 export default ExpenseService;
