@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from "react";
+import { Link } from "react-router-dom";
+
 import ExpenseService from '../services/ExpenseService';
 import IExpense from "../models/IExpense";
 
@@ -6,7 +8,7 @@ import ExpenseListItem from "./ExpenseListItem";
 import ExpenseFilter from "./expenseFilter/ExpenseFilter";
 import IExpenseFilter from "../models/IExpenseFilter";
 
-import { Alert, Table } from "react-bootstrap";
+import { Alert, Table, Button } from "react-bootstrap";
 
 const ExpenseList: React.FC = () => {
 
@@ -53,10 +55,15 @@ const ExpenseList: React.FC = () => {
 
   return (
     <div>
-      <ExpenseFilter onSearchFilter={(filterOptions:IExpenseFilter) => retrieveExpensesWithOptions(filterOptions)}/>
+      <div style={{textAlign:'right'}}>
+        <Link to="/form">
+          <Button type="submit" variant="primary">Add New</Button>
+        </Link>
+      </div>
 
-      <div className="card" style={{marginTop: '20px'}}>
-
+      <div className="card" style={{marginTop: '20px', padding:'10px'}}>
+        <ExpenseFilter onSearchFilter={(filterOptions:IExpenseFilter) => retrieveExpensesWithOptions(filterOptions)}/>
+        
         <Alert variant="secondary" hidden={expenses.length > 0} >
           0 Results. The search criteria has not found any result.
         </Alert>
@@ -69,7 +76,7 @@ const ExpenseList: React.FC = () => {
               <th>Cost</th>
               <th>Due Date</th>
               <th>Paid</th>
-              <th>Payment Method</th>
+              <th colSpan={3}>Payment Method</th>
             </tr>
           </thead>
           <tbody>
@@ -91,7 +98,7 @@ const ExpenseList: React.FC = () => {
                 { expenses.reduce((acc, element) => acc + element.cost, 0) }
                 </strong>
               </td>
-              <td colSpan={3}></td>
+              <td colSpan={5}></td>
             </tr>
           </tfoot>
         </Table>

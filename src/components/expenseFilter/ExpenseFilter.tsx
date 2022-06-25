@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
 import { Row, Col, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro' // 
+
 import Form from 'react-bootstrap/Form';
 import './expenseFilter.css';
 
@@ -18,6 +19,8 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
   const [paid, setPaid] = useState<boolean>(false);
   const [years, setYears] = useState<Array<number>>([]);
   const [months, setMonths] = useState<Array<number>>([]);
+  
+  const [optionMonth, setOptionMonth] = useState<string>("Select year first");
 
   useEffect(() => {
     ExpenseService.getExpensesYears()
@@ -35,22 +38,12 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
     ExpenseService.getExpenseMonths(parseInt(selectedYear))
       .then((response:any) => {
         setMonths(response.data);
+        setOptionMonth("Select Month");
       })
       .catch((err:any) => {
         console.error('Could not fetch the months for the selected year.', err);
       })
   }
-
-  /*
-  const months = [
-    {label: '1', value:'1'},
-    {label: '2', value:'2'},
-    {label: '3', value:'3'},
-    {label: '4', value:'4'},
-    {label: '5', value:'5'},
-    {label: '6', value:'6'}
-  ]*/
-
 
   const formSubmit = (e: any) => {
     e.preventDefault();
@@ -65,8 +58,8 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
   }
 
   return(
-    <div>
-      <Form onSubmit={formSubmit}>
+    <div style={{padding: '10px'}}>
+      <Form onSubmit={formSubmit} >
         <Row>
           <Col>
             <Form.Group>
@@ -105,7 +98,7 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
                 aria-label="Month"
                 value={month}
                 onChange={e => setMonth(e.target.value)}>
-                <option>Month</option>
+                <option>{optionMonth}</option>
                 {
                   months.map((month:number) => (
                     <option key={month} value={month}>{month}</option>
@@ -117,32 +110,30 @@ const ExpenseFilter = ({onSearchFilter}: any) => {
           <Col>
             <Form.Group>
               <Form.Label htmlFor="">&nbsp;</Form.Label>
-              <Form.Check 
-                checked={paid}
-                type="checkbox"
-                id="check-paid"
-                label="Paid"
-                onChange={()=> setPaid(!paid)}>
-              </Form.Check>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group>
-              <Form.Label htmlFor="">&nbsp;</Form.Label>
               <div>
-                <Button type="submit" variant="primary">Search</Button>
+                <label 
+                  htmlFor="paid"
+                  style={{cursor:'pointer'}}>
+                  <input 
+                    type="checkbox" 
+                    id="paid" 
+                    checked={paid}
+                    onChange={() => setPaid(!paid)} />
+                  Paid
+                </label>
               </div>
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group>
-              <Form.Label htmlFor="">&nbsp;</Form.Label>
-              <div style={{textAlign: 'right'}}>
-                <Link to="/form">
-                  <Button type="submit" variant="secondary">Add New</Button>
-                </Link>
-              </div>
-            </Form.Group>
+            <Form.Label htmlFor="">&nbsp;</Form.Label>
+            <div style={{textAlign:'right'}}>
+              <Button 
+                type="submit"
+                variant="outline-dark"
+                style={{marginLeft:'10px'}}>
+                  <FontAwesomeIcon icon={solid('magnifying-glass')}/>
+              </Button>
+            </div>
           </Col>
         </Row>      
       </Form>
