@@ -6,7 +6,8 @@ WORKDIR /usr/src/app
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-ENV REACT_APP_HOME_API_URL=http://localhost:8080/v2
+ARG HOMEINCAPI_URL
+ENV REACT_APP_HOME_API_URL=$HOMEINCAPI_URL
 
 RUN npm install --silent
 
